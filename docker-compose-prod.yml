@@ -1,0 +1,41 @@
+networks:
+  proxy:
+    name: proxy
+    external: true
+  random-gif:
+    name: random-gif
+volumes:
+  gif-db: {}
+services:
+  mongo:
+    image: mongo:5.0
+    volumes:
+      - gif-db:/data/db
+    networks:
+      - random-gif
+  app:
+    image: aniramadoss/random-gif:latest
+    networks:
+      - random-gif
+      - proxy
+    labels:
+      traefik.http.routers.app.rule: Host(`app.localhost`)
+      traefik.http.services.app.loadbalancer.server.port: 3000
+  mongo-express:
+    image: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+    networks:
+      - random-gif
+      - proxy
+    labels:
+      traefik.http.routers.mongo-express.rule: Host(`mongo.localhost`)
+      traefik.http.services.mongo-express.loadbalancer.server.port: 8081
+  gifsicle:
+    image: starefossen/gifsicle
+    networks:
+      - random-gif
+      - proxy
+    labels:
+      traefik.http.routers.mongo-express.rule: Host(`gifsicle.localhost`)
+      traefik.http.services.mongo-express.loadbalancer.server.port: 6969
