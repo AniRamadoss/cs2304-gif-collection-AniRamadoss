@@ -6,7 +6,7 @@ const mongoClient = new MongoClient(MONGO_URL);
 
 // Change this to your own greeting
 const MY_MESSAGE =
-	"Hello! I'm Ani. It's nice to meet you. My gif is probably Keqing from genshin impact or a random meme!!";
+	"Hello! I'm Ani. It's nice to meet you. My gif is probably Keqing from genshin impact or V from BTS (He's my bias)";
 
 async function run() {
 	try {
