@@ -6,13 +6,28 @@ services:
         image: aniramadoss2002/gif-collection:latest
         ports:
             - 3000:3000
+        deploy:
+            replicas: 3
+            placement:
+                constraints:
+                    - "node.role==worker"
+            update_config:
+                delay: 10s
     mongo:
         image: mongo:5.0
         volumes:
             - gif-db:/data/db
+        deploy:
+            placement:
+                constraints:
+                    - "node.role==worker"
     mongo-express:
         image: mongo-express
         ports:
             - 8081:8081
         environment:
             ME_CONFIG_MONGODB_SERVER: mongo
+        deploy:
+            placement:
+                constraints:
+                    - "node.role==worker"

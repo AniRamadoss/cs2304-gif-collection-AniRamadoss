@@ -1,12 +1,18 @@
 const express = require("express");
+const fs = require("fs");
 
 const MongoClient = require("mongodb").MongoClient;
-const MONGO_URL = "mongodb://mongo:27017";
-const mongoClient = new MongoClient(MONGO_URL);
+function getConnectionString() {
+	const configLocation = process.env.MONGO_CONFIG_FILE || "/run/secrets/mongo-config.json";
+	if (!fs.existsSync(configLocation))
+	  throw new Error("No secret config found");
+	return require(configLocation).connectionString;
+  }
+  
+const mongoClient = new MongoClient(getConnectionString());
 
 // Change this to your own greeting
-const MY_MESSAGE =
-	"Hello! I'm Ani. It's nice to meet you. My gif is probably Keqing from genshin impact or V from BTS (He's my bias)";
+const MY_MESSAGE = process.env.CUSTOM_MESSAGE || "No message provided";
 
 async function run() {
 	try {
