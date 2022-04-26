@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    ports:
+      - 3080:3000
+networks:
+  default:
+    name: monitoring
+volumes:
+  prometheus-data:
+  grafana-storage:

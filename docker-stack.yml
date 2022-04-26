@@ -17,6 +17,9 @@ services:
             MONGO_CONFIG_FILE: /run/secrets/config.json
         secrets:
             - config.json
+        networks:
+            - default
+            - monitoring
     mongo:
         image: mongo:5.0
         volumes:
@@ -35,7 +38,9 @@ services:
             placement:
                 constraints:
                     - "node.role==worker"
-
+networks:
+    monitoring:
+        external: true
 secrets:
     config.json:
         external: true
